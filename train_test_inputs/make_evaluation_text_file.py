@@ -24,11 +24,13 @@ def concatenate_files(directory1, directory2, directory3):
     files_dir1.sort()
     files_dir2.sort()
     files_dir3.sort()
-    assert len(files_dir1) == len(files_dir2) == len(files_dir3)
+    pred_length = len(files_dir3)
     print('lengths', len(files_dir1), len(files_dir2), len(files_dir3))
+    #assert len(files_dir1) == len(files_dir2) == len(files_dir3)
+
 
     with open('output.txt', 'w') as file:
-        for i in range(len(files_dir2)):
+        for i in range(len(files_dir3)):
 
             path1 = files_dir1[i]
             path2 = files_dir2[i]
@@ -38,16 +40,23 @@ def concatenate_files(directory1, directory2, directory3):
 
     return concatenated_content
 
-
+# dir1 = input
+# dir2 = gt
+# dir3 = prediction
 
 # Replace 'path/to/dir1' and 'path/to/dir2' with your actual directory paths
-# directory1 = '/home/petu/datasets/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/train'
-# directory2 = '/home/petu/datasets/CityScapes/disparity_trainvaltest/disparity/train'
-# directory3 = '/home/petu/projects/claire/Marigold/results/citi_out/depth_npy'
-directory1 = '/home/petu/datasets/kitti/kitti_test_inputs'
-directory2 = '/home/petu/datasets/kitti/kitti_test_gts'
-directory3 = '/home/petu/projects/claire/ZoeDepth/results/kitti_out_run_image'
-#directory3 = '/home/petu/projects/claire/Marigold/results/kitti_out/depth_npy'
+#directory1 = '/home/petu/datasets/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/train'
+#directory2 = '/home/petu/datasets/CityScapes/disparity_trainvaltest/disparity/train'
+#directory3 = '/home/petu/projects/claire/ZoeDepth/results/citi_out'
+directory1 = '/Users/clairelin/Documents/research/datasets/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/train'
+directory2 = '/Users/clairelin/Documents/research/datasets/CityScapes/disparity_trainvaltest/disparity/train'
+directory3 = '/Users/clairelin/Documents/research/vidar/results/citi_out'
+#directory3 = '/home/petu/projects/claire/Marigold/results/citi_out/depth_npy'
+# directory1 = '/home/petu/datasets/kitti/kitti_test_inputs'
+# directory2 = '/home/petu/datasets/kitti/kitti_test_gts'
+# directory3 = '/home/petu/projects/claire/ZoeDepth/results/kitti_out_run_image_nk'
+#directory3 = '/Users/clairelin/Documents/research/Marigold/results/kitti_out/depth_npy'
+
 result_list = concatenate_files(directory1, directory2, directory3)
 
 # Now result_list contains the concatenated content of each file with a space

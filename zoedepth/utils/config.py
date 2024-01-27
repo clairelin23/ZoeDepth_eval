@@ -45,19 +45,120 @@ COMMON_CONFIG = {
     "uid": None,
     "print_losses": False
 }
-
+# "data_path_eval": os.path.join(HOME_DIR,
+#                                   "datasets/CitiScapes/leftImg8bit_trainvaltest/leftImg8bit/val"),
+#         "gt_path_eval": os.path.join(HOME_DIR,
+#                                 "datasets/CitiScapes/disparity_trainvaltest/disparity/val")
+# filenames_file_eval": "./train_test_inputs/citiscapes_test_files_with_gt.txt"
 DATASETS_CONFIG = {
+
+    # pred ready
+    "citiscapes_vidar": {
+        "dataset": "citiscrapes",
+        "avoid_boundary": False,
+        "data_path_eval": "/",
+        "gt_path_eval": "/",
+        "filenames_file_eval": "./train_test_inputs/citiscapes_vidar_with_gt_pred.txt",
+        "min_depth_eval": 1e-3,
+        "max_depth_eval": 80,
+        "min_depth": 1e-3,
+        "max_depth": 80,
+        # not sure if these values are good, maybe use others?
+        "do_random_rotate": True,  # ?
+        "degree": 1.0,  # ?
+        "do_kb_crop": False,  # ?
+        "garg_crop": False,  # ?
+        "eigen_crop": True,  # ?
+        "normalize_first": True,
+        "scale_to_absolute": True
+    },
+    "citiscapes_marigold": {
+        "dataset": "citiscrapes",
+        "avoid_boundary": False,
+        "data_path_eval": "/",
+        "gt_path_eval": "/",
+        "filenames_file_eval": "./train_test_inputs/temp.txt",
+        "min_depth_eval": 1e-3,
+        "max_depth_eval": 80,
+        "min_depth": 1e-3,
+        "max_depth": 80,
+        # not sure if these values are good, maybe use others?
+        "do_random_rotate": True,  # ?
+        "degree": 1.0,  # ?
+        "do_kb_crop": False,  # ?
+        "garg_crop": False,  # ?
+        "eigen_crop": True,  # ?
+        "scale_to_absolute": True
+    },
+    # pred ready
+    "citiscapes_zoe": {
+        "dataset": "citiscrapes",
+        "avoid_boundary": False,
+        "data_path_eval": "/",
+        "gt_path_eval": "/",
+        "filenames_file_eval": "./train_test_inputs/citiscapes_test_files_with_gt_pred.txt",
+        "min_depth_eval": 1e-3,
+        "max_depth_eval": 80,
+        "min_depth": 1e-3,
+        "max_depth": 80, # not sure if these values are good, maybe use others?
+        "do_random_rotate": True, #?
+        "degree": 1.0, #?
+        "do_kb_crop": False, #?
+        "garg_crop": False, #?
+        "eigen_crop": True, #?
+        "scale_to_absolute": True
+    },
+    # pred ready
+    "kitti_zoe_ready": {
+        "dataset": "kitti",
+        "min_depth": 0.001,
+        "max_depth": 80,
+        "input_height": 352,
+        "input_width": 1216,
+        "data_path_eval": "/",
+        "gt_path_eval": "/",
+        "filenames_file_eval": "./train_test_inputs/kitti_zoedepth_with_gt_pred.txt",
+        "min_depth_eval": 1e-3,
+        "max_depth_eval": 80,
+        "do_random_rotate": False,
+        "degree": 1.0,
+        "do_kb_crop": True, #?
+        "garg_crop": True, #?
+        "eigen_crop": False, #?
+        "use_right": False, #?
+        "scale_to_absolute": True,
+        "normalize_first": True
+    },
+    "kitti_marigold_ready": {
+        "dataset": "kitti",
+        "min_depth": 0.001,
+        "max_depth": 80,
+        "input_height": 352,
+        "input_width": 1216,
+        "data_path_eval": "/",
+        "gt_path_eval": "/",
+        "filenames_file_eval": "./train_test_inputs/kitti_marigold_with_gt_pred.txt",
+        "min_depth_eval": 1e-3,
+        "max_depth_eval": 80,
+        "do_random_rotate": False,
+        "degree": 1.0,
+        "do_kb_crop": True,  # ?
+        "garg_crop": True,  # ?
+        "eigen_crop": False,  # ?
+        "use_right": False , # ?
+        "scale_to_absolute": True
+    },
     "kitti": {
         "dataset": "kitti",
         "min_depth": 0.001,
         "max_depth": 80,
-        "data_path": os.path.join(HOME_DIR, "shortcuts/datasets/kitti/raw"),
-        "gt_path": os.path.join(HOME_DIR, "shortcuts/datasets/kitti/gts"),
+        "data_path": os.path.join(HOME_DIR, "datasets/kitti/raw"),
+        "gt_path": os.path.join(HOME_DIR, "datasets/kitti/gts"),
         "filenames_file": "./train_test_inputs/kitti_eigen_train_files_with_gt.txt",
         "input_height": 352,
         "input_width": 1216,  # 704
-        "data_path_eval": os.path.join(HOME_DIR, "shortcuts/datasets/kitti/raw"),
-        "gt_path_eval": os.path.join(HOME_DIR, "shortcuts/datasets/kitti/gts"),
+        "data_path_eval": os.path.join(HOME_DIR, "datasets/kitti/raw"),
+        "gt_path_eval": os.path.join(HOME_DIR, "datasets/kitti/gts"),
         "filenames_file_eval": "./train_test_inputs/kitti_eigen_test_files_with_gt.txt",
 
         "min_depth_eval": 1e-3,
@@ -74,13 +175,13 @@ DATASETS_CONFIG = {
         "dataset": "kitti",
         "min_depth": 0.001,
         "max_depth": 80,
-        "data_path": os.path.join(HOME_DIR, "shortcuts/datasets/kitti/raw"),
-        "gt_path": os.path.join(HOME_DIR, "shortcuts/datasets/kitti/gts"),
+        "data_path": os.path.join(HOME_DIR, "datasets/kitti/raw"),
+        "gt_path": os.path.join(HOME_DIR, "datasets/kitti/gts"),
         "filenames_file": "./train_test_inputs/kitti_eigen_train_files_with_gt.txt",
         "input_height": 352,
         "input_width": 1216,
-        "data_path_eval": os.path.join(HOME_DIR, "shortcuts/datasets/kitti/raw"),
-        "gt_path_eval": os.path.join(HOME_DIR, "shortcuts/datasets/kitti/gts"),
+        "data_path_eval": os.path.join(HOME_DIR, "datasets/kitti/raw"),
+        "gt_path_eval": os.path.join(HOME_DIR, "datasets/kitti/gts"),
         "filenames_file_eval": "./train_test_inputs/kitti_eigen_test_files_with_gt.txt",
 
         "min_depth_eval": 1e-3,
@@ -88,10 +189,10 @@ DATASETS_CONFIG = {
 
         "do_random_rotate": False,
         "degree": 1.0,
-        "do_kb_crop": True,
-        "garg_crop": True,
-        "eigen_crop": False,
-        "use_right": False
+        "do_kb_crop": True, #?
+        "garg_crop": True, #?
+        "eigen_crop": False, #?
+        "use_right": False #?
     },
     "nyu": {
         "dataset": "nyu",

@@ -380,6 +380,8 @@ class DataLoadPreprocess(Dataset):
             pred_path = os.path.join(sample_path.split()[2])
             pred = np.load(pred_path)
             pred = np.asarray(pred, dtype=np.float32)
+            if self.config.dataset == 'citiscapes_vidar':
+                pred = np.squeeze(pred)
 
             if self.mode == 'online_eval':
                 gt_path = self.config.gt_path_eval
@@ -398,11 +400,13 @@ class DataLoadPreprocess(Dataset):
                     depth_gt = np.expand_dims(depth_gt, axis=2)
                     if self.config.dataset == 'nyu':
                         depth_gt = depth_gt / 1000.0
+                    elif self.config.dataset == 'citiscapes_marigold' or self.config.dataset=='citiscapes_zoe' or self.config.dataset=='citiscapes_vidar':
+                        depth_gt = cv2.imread(depth_path, cv2.IMREAD_UNCHANGED).astype(np.float32)
+                        depth_gt[depth_gt > 0] = (depth_gt[depth_gt > 0] - 1) / 256.0
                     else:
                         depth_gt = depth_gt / 256.0
 
-                    mask = np.logical_and(
-                        depth_gt >= self.config.min_depth, depth_gt <= self.config.max_depth).squeeze()[None, ...]
+                    mask = np.logical_and(depth_gt >= self.config.min_depth, depth_gt <= self.config.max_depth).squeeze()[None, ...]
                 else:
                     mask = False
 
@@ -418,6 +422,29 @@ class DataLoadPreprocess(Dataset):
                                         352, left_margin:left_margin + 1216, :]
                     pred = pred[top_margin:top_margin +
                                         352, left_margin:left_margin + 1216]
+
+            if self.config.dataset == 'citiscapes_zoe' or self.config.normalize_first:
+                # normalize pred then scale to ground truth
+                pred = (pred - np.min(pred)) / (np.max(pred) - np.min(pred))
+
+            if self.config.scale_to_absolute:
+                # do scaling here, only needed for relative depth models
+                # Perform 2D polynomial fitting (quadratic)
+                # Apply the mask to the input data
+
+                nonzero_mask = (depth_gt != 0.0)
+
+                gt_masked = depth_gt[nonzero_mask]
+                pred_masked = pred[np.squeeze(nonzero_mask)]
+
+                # Perform 2D polynomial fitting (quadratic)
+                degree = 1
+                coeffs = np.polyfit(np.ravel(pred_masked), np.ravel(gt_masked),
+                                    degree)
+
+                pred = np.polyval(coeffs, pred)
+                # Reshape the fitted values back to a 2D array
+
             if self.mode == 'online_eval':
                 sample = {'image': image, 'depth': depth_gt, 'focal': focal, 'has_valid_depth': has_valid_depth,
                           'image_path': sample_path.split()[0], 'depth_path': sample_path.split()[1],
